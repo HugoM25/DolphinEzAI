@@ -17,9 +17,6 @@ Global variables
 ----------------
 '''
 
-# The port of the server
-server_port = 12345
-
 # The queue that will be used to store the inputs to execute at the next frame
 input_action_queue = queue.Queue()
 

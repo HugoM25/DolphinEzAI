@@ -98,7 +98,6 @@ def is_port_available(port:int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('localhost', port)) != 0
     
-
 '''
 Functions activable by the server
 -----------------------------------
@@ -246,8 +245,6 @@ def execute_input_queue():
 
 
 if __name__ == "__main__":
-
-
 
     # Get the memory adresses to watch
     has_loaded_memory_adresses = load_memory_adresses_to_watch()

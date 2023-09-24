@@ -26,6 +26,5 @@ The dolphin_server.py needs to run on the custom dolphin, to do so you can eithe
 <path_to_dolphin> --script <path_to_dolphin_server_script>
 ```
 
-
 ## API documentation
 

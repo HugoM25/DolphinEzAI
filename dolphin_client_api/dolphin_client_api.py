@@ -15,13 +15,13 @@ class DCA_client() :
         self.HOST = host
         self.PORT = port
 
-    def reset(self) -> None : 
+    def say_hello(self) -> any:
         '''
-        Ask the server to reset the emulator
+        Ask the server to say hello
         @return: The response of the server (success or error)
         '''
-        server_response = self.send_message('{"action":"reset"}')
-        return json.loads(server_response)
+        server_response = self.send_message('{"action":"say_hello"}')
+        return server_response
 
     def get_watch_list_values(self) -> any:
         '''
@@ -49,7 +49,7 @@ class DCA_client() :
         server_response = self.send_message('{"action":"set_inputs", "inputs":' + json.dumps(vars(inputs)) + '}')
         return server_response
 
-    def send_message(self, message):
+    def send_message(self, message:str) -> str:
         '''
         Send a message to the server
         @param message: The message to send
@@ -58,8 +58,11 @@ class DCA_client() :
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         # Connect to the server
-        client_socket.connect((self.HOST, self.PORT))
-
+        try :
+            client_socket.connect((self.HOST, self.PORT))
+        except ConnectionRefusedError as e :
+            return f"Error : {e}"
+        
         client_socket.sendall(message.encode())  # Send the message to the server
         data_server = client_socket.recv(1024)  # Receive data from the server
 
@@ -76,3 +79,6 @@ class DCA_client() :
         '''
         self.HOST = host
         self.PORT = port
+
+    def __str__(self) -> str:
+        return f"Host : {self.HOST}, Port : {self.PORT}"

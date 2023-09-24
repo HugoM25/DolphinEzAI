@@ -103,6 +103,13 @@ Functions activable by the server
 -----------------------------------
 '''
 
+def say_hello() -> None:
+    '''
+    Say hello
+    @return: None
+    '''
+    print("Hello!")
+
 def load_save_state_from_slot(slot_number:int) -> None :
     '''
     Load a save state from a slot
@@ -207,6 +214,9 @@ async def handle_client(reader, writer) -> None:
             # Add the input to the queue (to be processed at the next frame)
             input_action_queue.put(req_json["inputs"])
             server_response = '{"status":"ok"}'
+        elif req_json["action"] == "say_hello" :
+            say_hello()
+            server_response = '{"status":"ok", "message":"Hello"}'
         else : 
             server_response = '{"status":"error", "message":"Invalid action : ' + req_json["action"] + '"}'
 
@@ -218,10 +228,12 @@ async def handle_client(reader, writer) -> None:
 def start_server():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    server_coro = asyncio.start_server(handle_client, 'localhost')
+    server_coro = asyncio.start_server(handle_client, '127.0.0.1')
     server = loop.run_until_complete(server_coro)
     addr = server.sockets[0].getsockname()
     print(f'Serving on {addr}')
+    write_server_info(addr[0], addr[1])
+
 
     try:
         loop.run_forever()
@@ -232,8 +244,20 @@ def start_server():
     loop.run_until_complete(server.wait_closed())
     loop.close()
 
-    
+def write_server_info(host:str, port:int) :
+    '''
+    Write the server info (host, port) in a file dolphin_instances.txt
+    @return: None
+    '''
+    print("Writing server info in dolphin_instances.txt")
+    print("Host : " + host)
+    print("Port : " + str(port))
 
+    # Write the server info in a file
+    file_path: str = script_directory + "dolphin_instances.txt"
+    with open(file_path, "a") as file:
+        file.write(host + "," + str(port) + "\n")
+    
 def execute_input_queue():
     
     # If there is new inputs to execute change the current inputs

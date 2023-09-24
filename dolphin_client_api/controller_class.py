@@ -2,7 +2,6 @@
 The classes here are used to store the inputs of a controller
 '''
 
-
 '''
 This class is used to store the inputs of a controller that will be sent to the server
 The format readable by the server is the GameCube controller format
@@ -34,7 +33,6 @@ class Controller() :
         self.AnalogB: int =255 # 0-255
         self.Connected: int = 0
         self.ID: int = 0
-
 
 '''
 This class is used to store the inputs of a controller 
